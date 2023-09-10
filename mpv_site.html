@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Text to Google Sheets</title>
+  <style>
+    /* Marked Change: Set the width of the input field */
+    #endereco {
+      width: 300px;
+    }
+    #produto {
+      width: 200px;
+    }
+    #productSearch {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<input type="text" id="endereco">
+<button onclick="sendText()">Enviar</button>
+<div id="searchAddress"></div> <!-- This is where the text will be displayed -->
+
+<br>
+
+<div id="productSearch">
+  <span>Produto que quer buscar:</span>
+  <input type="text" id="produto">
+  <button onclick="buscar()">Buscar</button>
+</div>
+
+
+<script>
+  var autocomplete;
+  var zipcode = "";
+
+  function initAutocomplete() {
+    var options = {
+      types: ['address'],
+      componentRestrictions: {'country': 'br'}
+    };
+    
+    autocomplete = new google.maps.places.Autocomplete(document.getElementById('endereco'), options);
+    autocomplete.addListener('place_changed', fillInAddress);
+  }
+
+  function fillInAddress() {
+    var place = autocomplete.getPlace();
+    
+    zipcode = "";  // Reset the ZIP code
+    for (var i = 0; i < place.address_components.length; i++) {
+      var addressType = place.address_components[i].types[0];
+      if (addressType === "postal_code") {
+        zipcode = place.address_components[i]['long_name'];
+      }
+    }
+
+  }
+
+  async function sendText() {
+    let text = document.getElementById("endereco").value;
+    if (zipcode) {  // Only append if ZIP exists
+      text += ", " + zipcode; 
+    }
+    document.getElementById("searchAddress").innerText = 'Endereço de pesquisa: ' + text;
+    document.getElementById("productSearch").style.display = 'block';
+
+    const response = await fetch('http://localhost:3000/save-text', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({text})
+    });
+    
+    const result = await response.json();
+    alert(result.message);
+  }
+  
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDeFk15IXJjqtGqk6eRw-S_7CSZZ87oMLE&libraries=places&callback=initAutocomplete" async defer></script>
+
+</body>
+</html>

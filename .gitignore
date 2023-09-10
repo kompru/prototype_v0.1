@@ -1,0 +1,12 @@
+acredentials.json
+config.js
+
+# Ignore macOS system files
+.DS_Store
+.localized
+
+# Ignore node_modules directory
+node_modules/
+
+# Ignore IntelliJ IDEA project files
+.idea/
