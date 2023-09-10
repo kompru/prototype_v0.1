@@ -3,7 +3,7 @@ const { google } = require('googleapis');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const cors = require('cors');
-const config = require('./config'); // Load credentials from config.js
+const config = require('./config');
 
 // Initialize Express
 const app = express();
@@ -25,13 +25,19 @@ const auth = new google.auth.GoogleAuth({
 // Initialize Google Sheets API
 const sheets = google.sheets({ version: 'v4', auth });
 
+// New endpoint to get Google Maps API Key
+app.get('/get-google-maps-key', (req, res) => {
+  const { googleMapsApiKey } = config;
+  res.json({ googleMapsApiKey });
+});
+
 // Endpoint to save text
 app.post('/save-text', async (req, res) => {
   console.log('Saving text...');
   const text = req.body.text;
 
   try {
-    await saveTextToSheet(text, sheets, config.spreadsheetId);
+    await saveTextToSheet(text, sheets, config.spreadsheetId, 'Sheet1');
     res.json({ message: 'Text saved' });
   } catch (error) {
     console.error(error);
@@ -39,9 +45,22 @@ app.post('/save-text', async (req, res) => {
   }
 });
 
+// Marked Change: New endpoint to save product
+app.post('/save-product', async (req, res) => {
+  console.log('Saving product...');
+  const product = req.body.product;
+
+  try {
+    await saveTextToSheet(product, sheets, config.spreadsheetId, 'Products'); // Save to 'Products' tab
+    res.json({ message: 'Product saved' });
+  } catch (error) {
+    console.error(error);
+    res.json({ message: 'Failed to save product' });
+  }
+});
+
 // Save Text to Google Sheet
-async function saveTextToSheet(text, sheetsAPI, spreadsheetId) {
-  const sheetName = 'Sheet1';
+async function saveTextToSheet(text, sheetsAPI, spreadsheetId, sheetName) {
   const values = [[text]];
 
   // Append data to Google Sheet
