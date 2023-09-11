@@ -10,3 +10,5 @@ node_modules/
 
 # Ignore IntelliJ IDEA project files
 .idea/
+
+key_pair_1
