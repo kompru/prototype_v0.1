@@ -68,7 +68,7 @@
     document.getElementById("searchAddress").innerText = 'Endereço de pesquisa: ' + text;
     document.getElementById("productSearch").style.display = 'block';
 
-    const response = await fetch('https://18.223.171.150:3000/save-text', {
+    const response = await fetch('http://18.223.171.150:3000/save-text', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({text})
@@ -83,7 +83,7 @@
     const product = document.getElementById("product").value;
     document.getElementById("searchStatus").innerText = "Buscando '" + product + "':";
 
-    const response = await fetch('https://18.223.171.150:3000/save-product', {
+    const response = await fetch('http://18.223.171.150:3000/save-product', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({product})
@@ -95,10 +95,10 @@
 
 // New Code: Function to load Google Maps API dynamically
 async function loadGoogleMapsAPI() {
-  const res = await fetch('https://18.223.171.150:3000/get-google-maps-key');
+  const res = await fetch('http://18.223.171.150:3000/get-google-maps-key');
   const data = await res.json();
   const script = document.createElement('script');
-  script.src = `https://maps.googleapis.com/maps/api/js?key=${data.googleMapsApiKey}&libraries=places&callback=initAutocomplete`;
+  script.src = `http://maps.googleapis.com/maps/api/js?key=${data.googleMapsApiKey}&libraries=places&callback=initAutocomplete`;
   script.async = true;
   script.defer = true;
   document.body.appendChild(script);

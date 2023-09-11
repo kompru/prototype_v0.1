@@ -19,7 +19,7 @@ const auth = new google.auth.GoogleAuth({
     client_email,
     private_key,
   },
-  scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+  scopes: ['http://www.googleapis.com/auth/spreadsheets'],
 });
 
 // Initialize Google Sheets API
@@ -74,5 +74,5 @@ async function saveTextToSheet(text, sheetsAPI, spreadsheetId, sheetName) {
 
 // Start the server
 app.listen(3000, () => {
-  console.log('Server running on https://18.223.171.150:3000');
+  console.log('Server running on http://18.223.171.150:3000');
 });
