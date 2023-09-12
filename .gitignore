@@ -1,5 +1,8 @@
 credentials.json
 config.js
+key_pair_1
+key_pair_1.pem
+carbide-booth-398715-8208869cc0c9
 
 # Ignore macOS system files
 .DS_Store
@@ -11,4 +14,3 @@ node_modules/
 # Ignore IntelliJ IDEA project files
 .idea/
 
-key_pair_1
