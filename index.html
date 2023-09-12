@@ -31,6 +31,8 @@
 
 <div id="searchStatus"></div>
 
+<div id="excelOutput"></div>  <!-- New: Element to display the CSV content -->
+
 <script>
   // Existing function to get the server IP
   async function getServerIp() {
@@ -100,16 +102,30 @@
   async function buscar() {
     const product = document.getElementById("product").value;
     document.getElementById("searchStatus").innerText = "Buscando '" + product + "':";
-
-    const response = await fetch(`http://${serverIp}:3000/save-product`, {
+    
+    let response = await fetch(`http://${serverIp}:3000/save-product`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({product})
     });
-
-    const result = await response.json();
+    
+    let result = await response.json();
     alert(result.message);
+
+    // New Code: Call the server-side route to run the Python script
+    response = await fetch(`http://${serverIp}:3000/run-python`, { method: 'POST' });
+    result = await response.json();
+    if (response.ok) {
+      console.log(result.output);
+    } else {
+      console.error(`Error: ${result.message}\nDetails: ${result.error}`);
+    }
+
+    const excelResponse = await fetch(`http://${serverIp}:3000/get-excel-output`);
+    const excelData = await excelResponse.json();
+    document.getElementById("excelOutput").innerText = excelData.content;
   }
+  
 
 // New Code: Function to load Google Maps API dynamically
 async function loadGoogleMapsAPI() {
