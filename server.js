@@ -1,31 +1,26 @@
 const express = require('express');
-const { google } = require('googleapis');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const cors = require('cors');
 const config = require('./config');
+const ip = require('ip');
+const path = require('path');
+const ExcelJS = require('exceljs');  // Marked Change: Add ExcelJS
 
 // Initialize Express
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-// Use the service account credentials from config.js
-const { client_email, private_key } = config;
-
-// Initialize Google Auth Client using service account credentials
-const auth = new google.auth.GoogleAuth({
-  credentials: {
-    client_email,
-    private_key,
-  },
-  scopes: ['http://www.googleapis.com/auth/spreadsheets'],
+app.get('/server-ip', (req, res) => {
+  res.send(ip.address());
 });
 
-// Initialize Google Sheets API
-const sheets = google.sheets({ version: 'v4', auth });
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
 
-// New endpoint to get Google Maps API Key
+// Restore: Endpoint to get Google Maps API Key
 app.get('/get-google-maps-key', (req, res) => {
   const { googleMapsApiKey } = config;
   res.json({ googleMapsApiKey });
@@ -37,42 +32,48 @@ app.post('/save-text', async (req, res) => {
   const text = req.body.text;
 
   try {
-    await saveTextToSheet(text, sheets, config.spreadsheetId, 'Sheet1');
+    await appendToExcelSheet(text, 'Sheet1'); // Marked Change: Append to Excel
     res.json({ message: 'Text saved' });
   } catch (error) {
-    console.error(error);
-    res.json({ message: 'Failed to save text' });
+    console.error('Error saving text:', error);
+    res.status(500).json({ message: 'Failed to save text', error: error.message });
   }
 });
 
-// Marked Change: New endpoint to save product
+// Endpoint to save product
 app.post('/save-product', async (req, res) => {
-  console.log('Saving product...');
+  console.log('Saving text...');
   const product = req.body.product;
 
   try {
-    await saveTextToSheet(product, sheets, config.spreadsheetId, 'Products'); // Save to 'Products' tab
-    res.json({ message: 'Product saved' });
+    await appendToExcelSheet(product, 'Sheet2'); // Marked Change: Append to Excel
+    res.json({ message: 'Text saved' });
   } catch (error) {
-    console.error(error);
-    res.json({ message: 'Failed to save product' });
+    console.error('Error saving text:', error);
+    res.status(500).json({ message: 'Failed to save text', error: error.message });
   }
 });
 
-// Save Text to Google Sheet
-async function saveTextToSheet(text, sheetsAPI, spreadsheetId, sheetName) {
-  const values = [[text]];
-
-  // Append data to Google Sheet
-  await sheetsAPI.spreadsheets.values.append({
-    spreadsheetId,
-    range: `${sheetName}!A:A`,
-    valueInputOption: 'RAW',
-    resource: { values }
-  });
+async function appendToExcelSheet(text, tabName) {
+  const workbook = new ExcelJS.Workbook();
+  
+  // Reading the existing Excel file
+  await workbook.xlsx.readFile('./Workbook.xlsx');
+  
+  // Get the tab (worksheet) by its name, or add it if it doesn't exist
+  let worksheet = workbook.getWorksheet(tabName);
+  if (!worksheet) {
+    worksheet = workbook.addWorksheet(tabName);
+  }
+  
+  // Append the new row
+  worksheet.addRow([text]);
+  
+  // Write the Excel file back to disk
+  await workbook.xlsx.writeFile('./Workbook.xlsx');
 }
 
 // Start the server
 app.listen(3000, () => {
-  console.log('Server running on http://18.223.171.150:3000');
+  console.log(`Server running on http://${ip.address()}:3000`);
 });

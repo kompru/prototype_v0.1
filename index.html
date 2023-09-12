@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Text to Google Sheets</title>
+  <title>Text to Excel</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    /* Marked Change: Set the width of the input field */
-    #address {
+    /* No changes here */
+    address {
       width: 300px;
     }
-    #product {
+    product {
       width: 200px;
     }
-    #productSearch {
+    productSearch {
       display: none;
     }
   </style>
@@ -20,8 +20,7 @@
 
 <input type="text" id="address">
 <button onclick="sendText()">Enviar</button>
-<div id="searchAddress"></div> <!-- This is where the text will be displayed -->
-
+<div id="searchAddress"></div>
 <br>
 
 <div id="productSearch">
@@ -30,8 +29,23 @@
   <button onclick="buscar()">Buscar</button>
 </div>
 
-<!-- This is where the search status will be displayed -->
 <div id="searchStatus"></div>
+
+<script>
+  // Existing function to get the server IP
+  async function getServerIp() {
+    const response = await fetch('/server-ip');
+    const data = await response.text();
+    return data;
+  }
+
+  // Fetch and store server IP
+  let serverIp = '';
+  (async function () {
+    serverIp = await getServerIp();
+  })();
+
+</script>
 
 <script>
   var autocomplete;
@@ -68,22 +82,26 @@
     document.getElementById("searchAddress").innerText = 'Endereço de pesquisa: ' + text;
     document.getElementById("productSearch").style.display = 'block';
 
-    const response = await fetch('http://18.223.171.150:3000/save-text', {
+    const response = await fetch(`http://${serverIp}:3000/save-text`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({text})
     });
     
-    const result = await response.json();
+  const result = await response.json();
+  if (response.ok) {
     alert(result.message);
+  } else {
+    alert(`Error: ${result.message}\nDetails: ${result.error}`);
   }
+}
   
   // Marked Change: New function to handle the "Buscar" button
   async function buscar() {
     const product = document.getElementById("product").value;
     document.getElementById("searchStatus").innerText = "Buscando '" + product + "':";
 
-    const response = await fetch('http://18.223.171.150:3000/save-product', {
+    const response = await fetch(`http://${serverIp}:3000/save-product`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({product})
@@ -95,7 +113,7 @@
 
 // New Code: Function to load Google Maps API dynamically
 async function loadGoogleMapsAPI() {
-  const res = await fetch('http://18.223.171.150:3000/get-google-maps-key');
+  const res = await fetch(`http://${serverIp}:3000/get-google-maps-key`);
   const data = await res.json();
   const script = document.createElement('script');
   script.src = `http://maps.googleapis.com/maps/api/js?key=${data.googleMapsApiKey}&libraries=places&callback=initAutocomplete`;
@@ -105,8 +123,11 @@ async function loadGoogleMapsAPI() {
 }
 
 // New Code: Load Google Maps API
-loadGoogleMapsAPI();
-  
+(async function () {
+  serverIp = await getServerIp();
+  loadGoogleMapsAPI(serverIp);
+})();
+
 </script>
 <!-- Removed the previous <script> for Google Maps API -->
 </body>
