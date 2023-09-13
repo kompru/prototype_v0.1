@@ -1,5 +1,4 @@
 from __future__ import print_function
-
 from algorithms.aditional_queries_algorithm import AditionalQueriesAlgorithm as AQA
 from google_sheet.google_sheet_api import GoogleSheetApi
 from utils.file_generator import FileGenerator
@@ -131,7 +130,6 @@ def getFirstQuery(_querys):
     return querys_dict
 
 """INPUTS"""
-
 original_queries_dic = {}
 clientDetails = InputSettings.CLIENTS[int(sys.argv[1])]
 address = clientDetails["__ADDRESS__"]
@@ -139,7 +137,6 @@ client = clientDetails["__NAME__"]
 querys = clientDetails["__QUERY__"]
 query = getFirstQuery(querys)
 AQA.addAditionalQueries(query, original_queries_dic)
-
 
 """PROGRAM"""
 current_datetime = datetime.now()
@@ -186,7 +183,6 @@ for stores in search_dict.values():
             for items in store_items:
                 products_list.append(items)
 
-#add datetime 
 current_datetime = datetime.now()
 formatted_datetime = current_datetime.strftime("%Y-%m-%d | %H:%M:%S")
 
@@ -211,7 +207,6 @@ if len(datetime_products_list) > 0:
         dict_writer.writerows(datetime_products_list)
 
 if len(datetime_products_list) > 0:
-    # FileGenerator.generateFiles(datetime_products_list, clientDetails)
     GoogleSheetApi.update_google_sheet(datetime_products_list, clientDetails)
 
 current_datetime = datetime.now()

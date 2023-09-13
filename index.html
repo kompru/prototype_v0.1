@@ -4,7 +4,6 @@
   <title>Text to Excel</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    /* No changes here */
     address {
       width: 300px;
     }
@@ -32,22 +31,6 @@
 <div id="searchStatus"></div>
 
 <div id="excelOutput"></div>  <!-- New: Element to display the CSV content -->
-
-<script>
-  // Existing function to get the server IP
-  async function getServerIp() {
-    const response = await fetch('/server-ip');
-    const data = await response.text();
-    return data;
-  }
-
-  // Fetch and store server IP
-  let serverIp = '';
-  (async function () {
-    serverIp = await getServerIp();
-  })();
-
-</script>
 
 <script>
   var autocomplete;
@@ -98,7 +81,6 @@
   }
 }
   
-  // Marked Change: New function to handle the "Buscar" button
   async function buscar() {
     const product = document.getElementById("product").value;
     document.getElementById("searchStatus").innerText = "Buscando '" + product + "':";
@@ -112,7 +94,6 @@
     let result = await response.json();
     alert(result.message);
 
-    // New Code: Call the server-side route to run the Python script
     response = await fetch(`http://${serverIp}:3000/run-python`, { method: 'POST' });
     result = await response.json();
     if (response.ok) {
@@ -120,14 +101,12 @@
     } else {
       console.error(`Error: ${result.message}\nDetails: ${result.error}`);
     }
-
+    
     const excelResponse = await fetch(`http://${serverIp}:3000/get-excel-output`);
     const excelData = await excelResponse.json();
     document.getElementById("excelOutput").innerText = excelData.content;
-  }
-  
+}
 
-// New Code: Function to load Google Maps API dynamically
 async function loadGoogleMapsAPI() {
   const res = await fetch(`http://${serverIp}:3000/get-google-maps-key`);
   const data = await res.json();
@@ -138,13 +117,22 @@ async function loadGoogleMapsAPI() {
   document.body.appendChild(script);
 }
 
-// New Code: Load Google Maps API
 (async function () {
   serverIp = await getServerIp();
   loadGoogleMapsAPI(serverIp);
 })();
 
+async function getServerIp() {
+    const response = await fetch('/server-ip');
+    const data = await response.text();
+    return data;
+  }
+
+  let serverIp = '';
+  (async function () {
+    serverIp = await getServerIp();
+  })();
+
 </script>
-<!-- Removed the previous <script> for Google Maps API -->
 </body>
 </html>

@@ -1,12 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const fs = require('fs').promises; // Marked Change: Added '.promises'
+const fs = require('fs').promises; 
 const cors = require('cors');
 const config = require('./config');
 const ip = require('ip');
 const path = require('path');
 const ExcelJS = require('exceljs');  
-const { exec } = require('child_process');  // New: Import child_process
+const { exec } = require('child_process');  
 const app = express();
 
 app.use(cors());
@@ -16,8 +16,8 @@ app.get('/server-ip', (req, res) => {
   res.send(ip.address());
 });
 
-app.post('/run-python', async (req, res) => { // Marked Change: Added 'async'
-  exec('python3 mvp.py 0', async (error, stdout, stderr) => { // Marked Change: Added 'async'
+app.post('/run-python', async (req, res) => { 
+  exec('python3 mvp.py 0', async (error, stdout, stderr) => { 
     if (error) {
       console.error(`Error executing script: ${error}`);
       res.status(500).json({ message: 'Failed to run script', error: stderr });
@@ -25,7 +25,7 @@ app.post('/run-python', async (req, res) => { // Marked Change: Added 'async'
     }
     console.log(`stdout: ${stdout}`);
     const csvFilePath = './output.csv';
-    const csvContent = await fs.readFile(csvFilePath, 'utf8'); // Marked Change: Added 'await'
+    const csvContent = await fs.readFile(csvFilePath, 'utf8');
     res.json({ message: 'Successfully ran script', output: stdout, csvContent });
   });
 });
@@ -66,7 +66,7 @@ app.post('/save-product', async (req, res) => {
 });
 
 async function readCsv() {
-  const csvFilePath = './output.csv'; // Marked Change: Added csvFilePath definition
+  const csvFilePath = './output.csv';
   try {
     const csvContent = await fs.readFile(csvFilePath, 'utf8');
     return csvContent;
@@ -84,7 +84,6 @@ app.get('/get-excel-output', async (req, res) => {
   }
 });
 
-
 async function appendToExcelSheet(text, tabName) {
   const workbook = new ExcelJS.Workbook();
   
@@ -95,7 +94,6 @@ async function appendToExcelSheet(text, tabName) {
     worksheet = workbook.addWorksheet(tabName);
   }
   
-  // Marked Change: Insert the new row at the second position
   worksheet.spliceRows(2, 0, [text]);
   
   await workbook.xlsx.writeFile('./Workbook.xlsx');

@@ -1,5 +1,5 @@
 import pandas as pd
-from ast import literal_eval  # <-- Added this import
+from ast import literal_eval
 
 class InputSettings:
 # Load the Excel Workbook
@@ -29,32 +29,20 @@ class InputSettings:
         }
         CLIENTS.append(client_dict)
 
-
-    # Just remember to user / instead of \
     DICTIONARY_FILE_PATH = '/Users/athos/Library/CloudStorage/GoogleDrive-athos@kompru.com/My Drive/06 Code/Github/rappi-scrapper_v2/rappi-scrapper/dictionary.xlsx'
-
-    # THE UNIT IS SECONDS 60 * 2 = 120 seconds = 2 minutes
-    # 1 HOUR = 60 * 60
-    # 2 HOURS = 60 * 60 * 2
-    AUTO_SCRIPT_SCHEDULER_TIME = 1
-
-    # Save products-out-stock in .xlsx?
-    # True  -> Save oducts-out-stock = False in .xlsx file
-    # False -> Save pnly proroducts-out-stock = True or False in .xlsx file
-    ONLY_AVAILABLE_PRODUCTS = False
-
-    # Save match-search-term? in .xlsx?
-    # True  -> Save only match-search-term? = True in .xlsx file
-    # False -> Save match-search-term? = True or False in .xlsx file
-    ONLY_MATCH_SEARCH_TERM_PRODUCTS = False
-
-    # Save product-input-price = incompativel in .xlsx?
-    # True  -> Save only product-input-price != incompativel in .xlsx file
-    # False -> Save all product-input-price in .xlsx file
-    ONLY_COMPATIBLE_PRICES_PRODUCTS = False
-    
     DIRECTORY_PATH = "/Users/athos/Library/CloudStorage/GoogleDrive-athos@kompru.com/My Drive/06 Code/Barra-de-busca-para-itens-MVP/rappi-scrapper/"
 
+    # 1 HOUR = 60 * 60
+    AUTO_SCRIPT_SCHEDULER_TIME = 1
+
+    # True  -> Save oducts-out-stock = False in .xlsx file
+    ONLY_AVAILABLE_PRODUCTS = False
+
+    # True  -> Save only match-search-term? = True in .xlsx file
+    ONLY_MATCH_SEARCH_TERM_PRODUCTS = False
+
+    # True  -> Save only product-input-price != incompativel in .xlsx file
+    ONLY_COMPATIBLE_PRICES_PRODUCTS = False
     
     # Excel Header columns
     EXCEL_HEADER = ['k collected-at',         'k term',                   'k unit-input', 
