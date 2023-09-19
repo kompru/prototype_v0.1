@@ -45,18 +45,22 @@ def getStoreAddress(bearer_token, store_id):
         exit()         
 
 def storesList(lat, lng, query, bearer_token):
+    print(f'lat: {lat}')
+    print(f'lng: {lng}')
+    print(f'query: {query}')
+
     stores_list = []
     # URL of the target endpoint
     url = 'https://services.rappi.com.br/api/pns-global-search-api/v1/unified-search?is_prime=false&unlimited_shipping=false'
     payload = {
         'lat': lat,
         'lng': lng,
-        'query': query, 
-        'options': {}
+        'options': {},
+        'query': query,     
     }
     request_heathers = {
         'authorization' : bearer_token,
-        'user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36' 
+        'user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36' 
     }
     
     try:

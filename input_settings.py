@@ -1,5 +1,5 @@
-import pandas as pd
 from ast import literal_eval
+import pandas as pd
 
 class InputSettings:
 # Load the Excel Workbook
@@ -11,8 +11,8 @@ class InputSettings:
     df_query = pd.read_excel(workbook_path, sheet_name='query')
     df_spreadsheet_id = pd.read_excel(workbook_path, sheet_name='spreadsheet_id')
 
-    print(df_address)
-    print(df_query)
+    # print(df_address)
+    # print(df_query)
 
     # Create CLIENTS dynamically
     CLIENTS = []
@@ -20,7 +20,7 @@ class InputSettings:
         # Convert the string-formatted 'Query' to an actual dictionary
         cell_content = df_query.iloc[i]['Query']  # <-- New line
         query_dict = {(cell_content, "kg"): ()}   # <-- Changed this line
-        print(query_dict)
+        # print(query_dict)
         client_dict = {
             "__NAME__": df_name.iloc[i]['Name'],
             "__ADDRESS__": df_address.iloc[i]['Address'],
@@ -29,7 +29,7 @@ class InputSettings:
         }
         CLIENTS.append(client_dict)
 
-    DICTIONARY_FILE_PATH = '/Users/athos/Library/CloudStorage/GoogleDrive-athos@kompru.com/My Drive/06 Code/Github/rappi-scrapper_v2/rappi-scrapper/dictionary.xlsx'
+    DICTIONARY_FILE_PATH = 'G:/My Drive/kompru/dictionary.xlsx'
     DIRECTORY_PATH = "/Users/athos/Library/CloudStorage/GoogleDrive-athos@kompru.com/My Drive/06 Code/Barra-de-busca-para-itens-MVP/rappi-scrapper/"
 
     # 1 HOUR = 60 * 60
