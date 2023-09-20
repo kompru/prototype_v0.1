@@ -17,7 +17,8 @@ compound_words = [
 # Unicode and lowercasing the keywords
 negative_keywords = [unidecode.unidecode(keyword.lower()) for keyword in [
     'artificial', 'imitacao', 'generica', 'falso', 'repl', 'generico', 'sabor','aroma','suino','suina','sem','petisco','petiscos','caes','burguer', 'burger','hamburger',
-    'light','zero','lactose', 'acucar','kit','caldo','knorr','salgadinho','cubos','desnatado','semidesnatado','lacfree','vegetal','em po','pao', 'diet', 'not', 'instantaneo', "esmalte"
+    'light','zero','lactose', 'acucar','kit','caldo','knorr','salgadinho','cubos','desnatado','semidesnatado','lacfree','vegetal','em po','pao', 'diet', 'not', 'instantaneo','vegano','vegana','extrato',
+    'composto','ceral','suplemento','cor','coloracao','chocolate','interfolhado','tempero','veg','racao', 'suína','hambúrguer', "instantaneo", "sanduiche"
 ]]
 
 grocery_synonyms = {

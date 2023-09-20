@@ -1,8 +1,9 @@
-import gspread
 from collections import Counter, defaultdict  # <-- Added defaultdict
-import unicodedata
 from config import config, products_spreadsheetid
 from datetime import datetime
+import unicodedata
+import gspread
+
 
 current_datetime = datetime.now()
 formatted_time = current_datetime.strftime("%Y-%m-%d | %H:%M:%S")

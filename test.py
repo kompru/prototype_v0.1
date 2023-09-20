@@ -1,21 +1,19 @@
-url = 'https://services.rappi.com.br/api/pns-global-search-api/v1/unified-search?is_prime=false&unlimited_shipping=false'
-payload = {
-        'lat': lat,
-        'lng': lng,
-        'options': {},
-        'query': query,     
-    }
-request_heathers = {
-        'authorization' : bearer_token,
-        'user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36' 
-    }
-    
-try:
-    response = requests.post(url, json=payload, headers=request_heathers)
-    response.raise_for_status()
-    if response.status_code == 200:
-        json_data = response.json()
-        print(json_data)
-except Exception as err:
-    print(err)
-     
+def format_address(input_str):
+    # Split the string into words
+    words = input_address.split()
+
+    # Capitalize the first letter of each word and join them
+    capitalized_words = [word.capitalize() for word in words]
+
+    # Join the capitalized words into a single string
+    formatted_address = ''.join(capitalized_words)
+
+    # Remove spaces, commas, dots, and hyphens
+    formatted_address = formatted_address.replace(' ', '').replace(',', '').replace('.', '').replace('-', '')
+
+    return formatted_address
+
+# Example usage:
+input_address = "Rua Doadora Eliane Stancioli, 35 - Buritis, Belo Horizonte - MG, 30575-790"
+result = format_address(input_address)
+print(result)

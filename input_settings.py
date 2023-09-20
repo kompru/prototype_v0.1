@@ -1,49 +1,54 @@
-from ast import literal_eval
 import pandas as pd
 
 class InputSettings:
-# Load the Excel Workbook
-    workbook_path = './Workbook.xlsx'
+    CLIENTS = [
+        {
+            "__NAME__": "MVP",
+            "__ADDRESS__": 'R. Prof. Baroni, 190 - 101 - Gutierrez, Belo Horizonte - MG, 30441-180',
+            "__QUERY__": {
+                ("arroz","kg"):(),
+            },
+            "__SPREADSHEET_ID__": '1lzEl5fIgC4PfC2PuA7zJBUfs8TrSY6wGHwG3ktUQRzs'
+        },
+        {
+            "__NAME__":"lucas_bhering_4",
+            "__ADDRESS__": 'R. Castelo de Lisboa, 280 - Castelo, Belo Horizonte - MG, 31330-452',
+            "__QUERY__": {
+                ("freestyle libre","und"):(),
+                ("insulina tresiba","L"):(),
+                ("insulina fiasp","L"):(),
+                ("bravecto 10 kg","und"):(),
+                ("insulina degludeca","L"):(),
+                },
+            "__SPREADSHEET_ID__":'1lVd-7z-B2lX5N_Ff-fW1MAefEacjAkU5OGfN222btQU'
+        },
+    ]
 
-    # Read sheets into dataframes
-    df_name = pd.read_excel(workbook_path, sheet_name='name')
-    df_address = pd.read_excel(workbook_path, sheet_name='address')
-    df_query = pd.read_excel(workbook_path, sheet_name='query')
-    df_spreadsheet_id = pd.read_excel(workbook_path, sheet_name='spreadsheet_id')
-
-    # print(df_address)
-    # print(df_query)
-
-    # Create CLIENTS dynamically
-    CLIENTS = []
-    for i in df_name.index:
-        # Convert the string-formatted 'Query' to an actual dictionary
-        cell_content = df_query.iloc[i]['Query']  # <-- New line
-        query_dict = {(cell_content, "kg"): ()}   # <-- Changed this line
-        # print(query_dict)
-        client_dict = {
-            "__NAME__": df_name.iloc[i]['Name'],
-            "__ADDRESS__": df_address.iloc[i]['Address'],
-            "__QUERY__": query_dict,  # <-- Changed this line
-            "__SPREADSHEET_ID__": df_spreadsheet_id.iloc[i]['Spreadsheet_ID']
-        }
-        CLIENTS.append(client_dict)
-
+    # Just remember to user / instead of \
     DICTIONARY_FILE_PATH = 'G:/My Drive/kompru/dictionary.xlsx'
-    DIRECTORY_PATH = "/Users/athos/Library/CloudStorage/GoogleDrive-athos@kompru.com/My Drive/06 Code/Barra-de-busca-para-itens-MVP/rappi-scrapper/"
 
+    # THE UNIT IS SECONDS 60 * 2 = 120 seconds = 2 minutes
     # 1 HOUR = 60 * 60
+    # 2 HOURS = 60 * 60 * 2
     AUTO_SCRIPT_SCHEDULER_TIME = 1
 
-    # True  -> Save oducts-out-stock = False in .xlsx file
+    # Save products-out-stock in .xlsx?
+    # True  -> Save only products-out-stock = False in .xlsx file
+    # False -> Save products-out-stock = True or False in .xlsx file
     ONLY_AVAILABLE_PRODUCTS = False
 
+    # Save match-search-term? in .xlsx?
     # True  -> Save only match-search-term? = True in .xlsx file
+    # False -> Save match-search-term? = True or False in .xlsx file
     ONLY_MATCH_SEARCH_TERM_PRODUCTS = False
 
+    # Save product-input-price = incompativel in .xlsx?
     # True  -> Save only product-input-price != incompativel in .xlsx file
+    # False -> Save all product-input-price in .xlsx file
     ONLY_COMPATIBLE_PRICES_PRODUCTS = False
     
+    DIRECTORY_PATH = "G:/My Drive/kompru/data"
+ 
     # Excel Header columns
     EXCEL_HEADER = ['k collected-at',         'k term',                   'k unit-input', 
                     'store-id',               'store-type',               'product-id',
@@ -52,3 +57,39 @@ class InputSettings:
                     'k product-input-unit',   'k product-input-price',    'k match-unit-input?',
                     'product-name',           'k term-in-product-name?',  'product-out-stock',
                     'step-quantity-in-grams']
+    
+    PAGE_TWO = [
+        {
+            "__ADDRESS__": 'Rua Jandiatuba, 74 - Buritis, Belo Horizonte - State of Minas Gerais, Brazil, 30493-135',
+            "__TERM__":'detergente',
+            "__PRODUCT_NAME__":'bombril detergente liquido limpol cristal 500ml',
+            "__SPREADSHEET_ID__":'1lzEl5fIgC4PfC2PuA7zJBUfs8TrSY6wGHwG3ktUQRzs',
+        }
+    ]
+
+    INPUT_SITE = True
+    WORKBOOK_PATH = './Workbook.xlsx'
+
+    df_name = pd.read_excel(WORKBOOK_PATH, sheet_name='name')
+    df_address = pd.read_excel(WORKBOOK_PATH, sheet_name='address')
+    df_query = pd.read_excel(WORKBOOK_PATH, sheet_name='query')
+    df_spreadsheet_id = pd.read_excel(WORKBOOK_PATH, sheet_name='spreadsheet_id')
+
+    for i in df_name.index:
+        name = df_name.iloc[i]['Name']
+        address = df_address.iloc[i]['Address']
+        cell_content = df_query.iloc[i]['Query']  
+        query_dict = {(cell_content, "kg"): ()}  
+        spreadsheet_id = df_spreadsheet_id.iloc[i]['Spreadsheet_ID']
+
+    SITE = [
+        {
+            "__NAME__": name,
+            "__ADDRESS__": address,
+            "__QUERY__": query_dict, 
+            "__SPREADSHEET_ID__": spreadsheet_id
+        }    
+    ] 
+            
+        
+        

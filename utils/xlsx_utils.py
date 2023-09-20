@@ -52,3 +52,7 @@ class XlsxUtils:
             return list(filter(lambda s: isinstance(s, str) and s, columns_list))
 
         return None
+    
+    def create_csv_file(product_dict):
+        data = pd.DataFrame(product_dict)
+        data.to_csv("output.csv", index=False)

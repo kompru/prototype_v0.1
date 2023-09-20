@@ -1,6 +1,5 @@
 
 config = {
-
     "type": "service_account",
     "project_id": "carbide-booth-398715",
     "private_key_id": "8208869cc0c98fdb49bfdb1e7735c1709a885c78",
@@ -14,4 +13,4 @@ config = {
     "universe_domain": "googleapis.com",
 }
 
-products_spreadsheetid = "11MMXmd2PNtDk8BfPe5BALj-IRY8gcoPWome4F-CF_7s"
+products_spreadsheetid = "1lzEl5fIgC4PfC2PuA7zJBUfs8TrSY6wGHwG3ktUQRzs"

@@ -75,8 +75,12 @@ class GoogleSheetApi:
 
         try:
             result = sheet.values().get(spreadsheetId=spread_sheet_id, range=sheet_name).execute()
-            _values = result.get('values', [])
-            last_index = len(_values)
+            if sheet_name == 'Page_One' or sheet_name == 'Page_Two':
+                service.spreadsheets().values().clear(spreadsheetId=spread_sheet_id, range=sheet_name, body={}).execute()
+                last_index = 1
+            else:
+                _values = result.get('values', [])
+                last_index = len(_values)
         except:
             print('Creating Sheet ', sheet_name)
             body = {
@@ -185,7 +189,8 @@ class GoogleSheetApi:
         return new_products_dict_list  
 
     @staticmethod
-    def update_google_sheet(products_list, clientDetails, error_list = None):
+    def update_google_sheet(clientDetails, products_list=None, error_list = None, page_one_list = None, page_two_list = None):
+        
         if "__SPREADSHEET_ID__" not in clientDetails or clientDetails["__SPREADSHEET_ID__"] == "":
             print ('__SPREADSHEET_ID__ not configured')
             return
@@ -207,9 +212,23 @@ class GoogleSheetApi:
 
             ## Erros Sheet
             GoogleSheetApi.update_sheet_api(service, g_sheet_id, "Erros", error_list)
+            
+            ## Address Sheet
+            GoogleSheetApi.update_sheet_api(service, g_sheet_id, "Address", [{ "Address": address }], True)
+
+        elif products_list is None:
+            new_page_two_list = GoogleSheetApi.convertProductsInvalidValuesToValid(page_two_list)
+            GoogleSheetApi.update_sheet_api(service, g_sheet_id, "Page_Two", new_page_two_list)
+
         else:
             new_products_list = GoogleSheetApi.convertProductsInvalidValuesToValid(products_list)
             GoogleSheetApi.update_sheet_api(service, g_sheet_id, "MVP", new_products_list)
 
-        ## Address Sheet
-        GoogleSheetApi.update_sheet_api(service, g_sheet_id, "Address", [{ "Address": address }], True)
+            new_page_one_list = GoogleSheetApi.convertProductsInvalidValuesToValid(page_one_list)
+            GoogleSheetApi.update_sheet_api(service, g_sheet_id, "Page_One", new_page_one_list)
+
+
+
+
+
+        
