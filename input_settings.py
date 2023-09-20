@@ -57,15 +57,6 @@ class InputSettings:
                     'k product-input-unit',   'k product-input-price',    'k match-unit-input?',
                     'product-name',           'k term-in-product-name?',  'product-out-stock',
                     'step-quantity-in-grams']
-    
-    PAGE_TWO = [
-        {
-            "__ADDRESS__": 'Rua Jandiatuba, 74 - Buritis, Belo Horizonte - State of Minas Gerais, Brazil, 30493-135',
-            "__TERM__":'detergente',
-            "__PRODUCT_NAME__":'bombril detergente liquido limpol cristal 500ml',
-            "__SPREADSHEET_ID__":'1lzEl5fIgC4PfC2PuA7zJBUfs8TrSY6wGHwG3ktUQRzs',
-        }
-    ]
 
     INPUT_SITE = True
     WORKBOOK_PATH = './Workbook.xlsx'
@@ -78,8 +69,8 @@ class InputSettings:
     for i in df_name.index:
         name = df_name.iloc[i]['Name']
         address = df_address.iloc[i]['Address']
-        cell_content = df_query.iloc[i]['Query']  
-        query_dict = {(cell_content, "kg"): ()}  
+        term = df_query.iloc[i]['Query']  
+        query_dict = {(term, "kg"): ()}  
         spreadsheet_id = df_spreadsheet_id.iloc[i]['Spreadsheet_ID']
 
     SITE = [
@@ -90,6 +81,15 @@ class InputSettings:
             "__SPREADSHEET_ID__": spreadsheet_id
         }    
     ] 
+
+    PAGE_TWO = [
+        {
+            "__ADDRESS__": address,
+            "__TERM__":term,
+            "__SPREADSHEET_ID__":spreadsheet_id,
+            "__PRODUCT_NAME__":'omo sabao em po lavagem perfeita 800gr',
+        }
+    ]
             
         
         
