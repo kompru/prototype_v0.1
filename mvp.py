@@ -219,8 +219,10 @@ json_file_name = f'{directory_path}/{term}_{formatted_address}'
 
 JsonFile.createJsonFile(datetime_products_list, json_file_name)
 
-product_names, store_addresses, product_quantities, product_units, product_prices, product_datetime = ProductFormatter.getProductsInfo(datetime_products_list)
+product_names, store_addresses, product_quantities, product_units, product_prices, product_datetime, product_scores = ProductFormatter.getProductsInfo(datetime_products_list)
 products_formatted_names = ProductFormatter.setProductsFormattedNames(product_names,product_quantities,product_units)
+
+
 products_formatted_names_by_price = ProductFormatter.getProductsLowestPrice(product_prices, products_formatted_names)
 page_one_list = setPageOneList(products_formatted_names_by_price)
 

@@ -3,8 +3,11 @@ import unicodedata
 import json
 
 class ProductFormatter:
-    def getTermPricesAndStores(product_name:str, _product_prices:list, _product_stores:list, _datetime_search:list, _products_formatted_names:list )->dict:
 
+    def sortProductsbyScore():
+        pass
+    
+    def getTermPricesAndStores(product_name:str, _product_prices:list, _product_stores:list, _datetime_search:list, _products_formatted_names:list )->dict:
         formatted_names_by_term = defaultdict(list)
         for formatted_name, price, store, datetime in zip(_products_formatted_names, _product_prices, _product_stores, _datetime_search):
             if  product_name == formatted_name:
@@ -55,6 +58,7 @@ class ProductFormatter:
         product_units = []
         product_prices = []
         product_datetime = []
+        product_scores = []
         for products_dict in products_list:
             for header,value in products_dict.items():
                 if header == 'product-name':
@@ -69,8 +73,10 @@ class ProductFormatter:
                     product_prices.append(value)
                 elif header == 'k collected-at':
                     product_datetime.append(value)
+                elif header == 'product-score':
+                    product_scores.append(value)
 
-        return product_names, store_addresses, product_quantities, product_units, product_prices, product_datetime
+        return product_names, store_addresses, product_quantities, product_units, product_prices, product_datetime, product_scores
     
 class JsonFile:
     def createJsonFile(products_list:list, file_path:str):
