@@ -1,11 +1,19 @@
 *.pyc
 *.xlsx
 *.json
-node_modules
+*.csv
 !package.json
 !google_sheet/*
 credentials.json
-config.js
+config.*
+Luis/*
+gspread/*
+obsolete/*
+auto_script.py
+.vscode
+google_sheet
+mvp_lambda.py
+__pycache__
 
 # Ignore macOS system files
 .DS_Store
