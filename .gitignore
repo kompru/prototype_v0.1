@@ -1,18 +1,24 @@
+*.pyc
+*.xlsx
+*.json
+*.csv
+!package.json
+!google_sheet/*
 credentials.json
 config.js
-key_pair_1
-key_pair_1.pem
-carbide-booth-398715-8208869cc0c9
+config.py
+Luis/*
+gspread/*
+obsolete/*
+auto_script.py
+.vscode
+google_sheet
+mvp_lambda.py
+__pycache__
 
 # Ignore macOS system files
 .DS_Store
 .localized
 
-# Ignore node_modules directory
-node_modules/
-
 # Ignore IntelliJ IDEA project files
 .idea/
-
-carbide-booth-398715-8208869cc0c9.json
-

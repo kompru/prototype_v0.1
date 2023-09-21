@@ -65,14 +65,15 @@ class FileGenerator:
             for product in products_list:
                 _products_list.append(product)
             with open(f'{file_path}.json', 'w') as fp:
-                    json.dump(_products_list, fp, indent=1)
-                    fp.close()
+                json.dump(_products_list, fp, indent=1)
+                fp.close()
 
         json_file = f'{file_path}.json'
         json_file_errors = f'{file_path_errors}.json'
         xlsx_file = f'{file_path}.xlsx'
         mvp_xlsx_file = f'{file_path}_mvp.xlsx'
-
+        # output_cvs_file = '/.output.cvs'
+        
         if not os.path.isfile(json_file):
             print('There is no json_file, please run auto_script.py with right InputSettings.DIRECTORY_PATH')
         else:
@@ -92,3 +93,5 @@ class FileGenerator:
                 XlsxUtils.update_xlsx_with_json(df_products, df_address, df_errors, xlsx_file, headers_products)
             else:
                 XlsxUtils.update_xlsx_with_json(df_products, df_address, mvp_xlsx_file)
+        
+        XlsxUtils.create_csv_file(products_list)

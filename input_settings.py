@@ -1,49 +1,18 @@
 import pandas as pd
-from ast import literal_eval
 
 class InputSettings:
-# Load the Excel Workbook
-    workbook_path = './Workbook.xlsx'
 
-    # Read sheets into dataframes
-    df_name = pd.read_excel(workbook_path, sheet_name='name')
-    df_address = pd.read_excel(workbook_path, sheet_name='address')
-    df_query = pd.read_excel(workbook_path, sheet_name='query')
-    df_spreadsheet_id = pd.read_excel(workbook_path, sheet_name='spreadsheet_id')
-
-    print(df_address)
-    print(df_query)
-
-    # Create CLIENTS dynamically
-    CLIENTS = []
-    for i in df_name.index:
-        # Convert the string-formatted 'Query' to an actual dictionary
-        cell_content = df_query.iloc[i]['Query']  # <-- New line
-        query_dict = {(cell_content, "kg"): ()}   # <-- Changed this line
-        print(query_dict)
-        client_dict = {
-            "__NAME__": df_name.iloc[i]['Name'],
-            "__ADDRESS__": df_address.iloc[i]['Address'],
-            "__QUERY__": query_dict,  # <-- Changed this line
-            "__SPREADSHEET_ID__": df_spreadsheet_id.iloc[i]['Spreadsheet_ID']
-        }
-        CLIENTS.append(client_dict)
-
-    DICTIONARY_FILE_PATH = '/Users/athos/Library/CloudStorage/GoogleDrive-athos@kompru.com/My Drive/06 Code/Github/rappi-scrapper_v2/rappi-scrapper/dictionary.xlsx'
-    DIRECTORY_PATH = "/Users/athos/Library/CloudStorage/GoogleDrive-athos@kompru.com/My Drive/06 Code/Barra-de-busca-para-itens-MVP/rappi-scrapper/"
-
-    # 1 HOUR = 60 * 60
-    AUTO_SCRIPT_SCHEDULER_TIME = 1
-
-    # True  -> Save oducts-out-stock = False in .xlsx file
+    # Save products-out-stock in .xlsx?
     ONLY_AVAILABLE_PRODUCTS = False
 
-    # True  -> Save only match-search-term? = True in .xlsx file
+    # Save match-search-term? in .xlsx?
     ONLY_MATCH_SEARCH_TERM_PRODUCTS = False
 
-    # True  -> Save only product-input-price != incompativel in .xlsx file
+    # Save product-input-price = incompativel in .xlsx?
     ONLY_COMPATIBLE_PRICES_PRODUCTS = False
     
+    DIRECTORY_PATH = "/Users/athos/Library/CloudStorage/GoogleDrive-athos@kompru.com/My Drive/06 Code/prototype_Luis/prototype_v0.1/"
+ 
     # Excel Header columns
     EXCEL_HEADER = ['k collected-at',         'k term',                   'k unit-input', 
                     'store-id',               'store-type',               'product-id',
@@ -52,3 +21,39 @@ class InputSettings:
                     'k product-input-unit',   'k product-input-price',    'k match-unit-input?',
                     'product-name',           'k term-in-product-name?',  'product-out-stock',
                     'step-quantity-in-grams']
+
+    INPUT_SITE = True
+    WORKBOOK_PATH = './Workbook.xlsx'
+
+    df_name = pd.read_excel(WORKBOOK_PATH, sheet_name='name')
+    df_address = pd.read_excel(WORKBOOK_PATH, sheet_name='address')
+    df_query = pd.read_excel(WORKBOOK_PATH, sheet_name='query')
+    df_spreadsheet_id = pd.read_excel(WORKBOOK_PATH, sheet_name='spreadsheet_id')
+
+    for i in df_name.index:
+        name = df_name.iloc[i]['Name']
+        address = df_address.iloc[i]['Address']
+        term = df_query.iloc[i]['Query']  
+        query_dict = {(term, "kg"): ()}  
+        spreadsheet_id = df_spreadsheet_id.iloc[i]['Spreadsheet_ID']
+
+    SITE = [
+        {
+            "__NAME__": name,
+            "__ADDRESS__": address,
+            "__QUERY__": query_dict, 
+            "__SPREADSHEET_ID__": spreadsheet_id
+        }    
+    ] 
+
+    PAGE_TWO = [
+        {
+            "__ADDRESS__": address,
+            "__TERM__":term,
+            "__SPREADSHEET_ID__":spreadsheet_id,
+            "__PRODUCT_NAME__":'omo sabao em po lavagem perfeita 800gr',
+        }
+    ]
+            
+        
+        
