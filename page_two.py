@@ -28,16 +28,13 @@ try:
 except FileNotFoundError as err:
     print(f'Error: {err}')
 
-product_names, store_addresses, product_quantities, product_units, product_prices, product_datetime = ProductFormatter.getProductsInfo(existing_data_list)
+product_names, store_addresses, product_quantities, product_units, product_prices, product_datetime, product_scores, store_names = ProductFormatter.getProductsInfo(existing_data_list)
 products_formatted_names = ProductFormatter.setProductsFormattedNames(product_names,product_quantities,product_units)
 
-if product_name in products_formatted_names:
-    pass
-else:
+if product_name not in products_formatted_names:
     print('ERRO: Select an existent Produc_name or Address')
     exit()
 
-products_formatted_names_by_term = ProductFormatter.getTermPricesAndStores(product_name, product_prices,store_addresses,product_datetime,products_formatted_names)
-page_two_list = setPageTwoList(products_formatted_names_by_term)
+page_two_list = ProductFormatter.getTermPricesAndStores(product_name, product_prices,store_addresses,product_datetime,products_formatted_names, store_names)
 GoogleSheetApi.update_google_sheet(clientDetails, None, None, None, page_two_list)
 

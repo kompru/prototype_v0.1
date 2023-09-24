@@ -1,3 +1,7 @@
+from __future__ import print_function
+
+from algorithms.aditional_queries_algorithm import AditionalQueriesAlgorithm as AQA
+from google_sheet.google_sheet_api import GoogleSheetApi
 from utils.mvp_utils import ProductFormatter, JsonFile
 from utils.file_generator import FileGenerator
 from utils.rappi_utils import StringUtils
@@ -8,17 +12,13 @@ import subprocess
 import geocoder 
 import requests
 import sys
-import boto3
-import json
 
-s3 = boto3.client('s3')
-
-def setPageOneList(_products_formatted_names_by_price):
-    page_one_list = list(_products_formatted_names_by_price.values())
-    new_page_one_list = []
-    for item in page_one_list:
-        new_page_one_list.append(item[0])
-    return new_page_one_list    
+# def setPageOneList(_products_formatted_names_by_price):
+#     page_one_list = list(_products_formatted_names_by_price.values())
+#     new_page_one_list = []
+#     for item in page_one_list:
+#         new_page_one_list.append(item[0])
+#     return new_page_one_list    
 
 def result():
   authorization = subprocess.run(['node', '-e', NodeCode.CODE], capture_output=True, text=True)
@@ -148,6 +148,8 @@ address = clientDetails["__ADDRESS__"]
 client = clientDetails["__NAME__"]
 querys = clientDetails["__QUERY__"]
 query = getFirstQuery(querys)
+AQA.addAditionalQueries(query, original_queries_dic)
+
 
 """PROGRAM"""
 current_datetime = datetime.now()
@@ -158,9 +160,9 @@ print(f'SELECTED CLIENT: {client}')
 
 if len(address) != 0:
     results = geoAddress(address)
-    print('Address OK')
+    print('Adress OK')
 else:
-    print('No address was input')
+    print('Input an address')
     exit()
 
 current_datetime = datetime.now()
@@ -215,23 +217,15 @@ directory_path = "./data"
 formatted_address = JsonFile.format_address(address)
 json_file_name = f'{directory_path}/{term}_{formatted_address}'
 
-json_data = json.dumps(datetime_products_list)
-s3.put_object(Body=json_data, Bucket='kompru-bucket', Key=f'search-home/{term}_{formatted_address}.json')
+product_names, store_addresses, product_quantities, product_units, product_prices, product_datetime, product_scores, store_names = ProductFormatter.getProductsInfo(datetime_products_list)
 
-product_names, store_addresses, product_quantities, product_units, product_prices, product_datetime, product_scores = ProductFormatter.getProductsInfo(datetime_products_list)
 products_formatted_names = ProductFormatter.setProductsFormattedNames(product_names,product_quantities,product_units)
 
-
-products_formatted_names_by_price = ProductFormatter.getProductsLowestPrice(product_prices, products_formatted_names)
-page_one_list = setPageOneList(products_formatted_names_by_price)
+page_one_list = ProductFormatter.sortProductsFromPageOne(products_formatted_names, product_scores, product_prices, store_addresses)
 
 if len(datetime_products_list) > 0:
-    FileGenerator.generateFiles(datetime_products_list, clientDetails)
-
-# This part seems to be missing in your code. You can add it where appropriate.
-json_data_page_one = json.dumps(page_one_list)
-s3.put_object(Body=json_data_page_one, Bucket='kompru-bucket', Key=f'scrape-results/{term}_{formatted_address}.json')
-
+    # FileGenerator.generateFiles(datetime_products_list, clientDetails)
+    GoogleSheetApi.update_google_sheet(clientDetails, datetime_products_list, None, page_one_list, None)
 
 current_datetime = datetime.now()
 formatted_time = current_datetime.strftime("%Y-%m-%d | %H:%M:%S")
