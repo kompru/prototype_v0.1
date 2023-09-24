@@ -11,14 +11,7 @@ from datetime import datetime
 import subprocess
 import geocoder 
 import requests
-import sys
-
-# def setPageOneList(_products_formatted_names_by_price):
-#     page_one_list = list(_products_formatted_names_by_price.values())
-#     new_page_one_list = []
-#     for item in page_one_list:
-#         new_page_one_list.append(item[0])
-#     return new_page_one_list    
+import sys    
 
 def result():
   authorization = subprocess.run(['node', '-e', NodeCode.CODE], capture_output=True, text=True)

@@ -6,7 +6,7 @@ class InputSettings:
             "__NAME__": "MVP",
             "__ADDRESS__": 'R. Prof. Baroni, 190 - 101 - Gutierrez, Belo Horizonte - MG, 30441-180',
             "__QUERY__": {
-                ("arroz","kg"):(),
+                ("vinho tinto","kg"):(),
             },
             "__SPREADSHEET_ID__": '1lzEl5fIgC4PfC2PuA7zJBUfs8TrSY6wGHwG3ktUQRzs'
         },
