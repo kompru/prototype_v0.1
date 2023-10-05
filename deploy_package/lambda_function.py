@@ -9,12 +9,13 @@ import pytz
 
 def lambda_handler(event, context):
     return {
-        'statusCode': 200,
-        'headers': [
-            "Access-Control-Allow-Origin" "*",
-            "Access-Control-Allow-Methods" "GET, POST, OPTIONS"
-        ],
-        'body': event    
+        "statusCode": 200,
+        "headers": {
+            "Access-Control-Allow-Headers" : "Content-Type",
+            "Access-Control-Allow-Origin": "https://d82cwlwrba78u.cloudfront.net",
+            "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+        },
+        "body": event    
     }
 
 def set_search_home_data(_products_list:list, _term:str)->dict:
