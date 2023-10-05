@@ -6,7 +6,7 @@ class InputSettings:
     INPUT_S3 = True
     S3 = boto3.client('s3')
     INPUT_BUCKET_NAME = 'input.json'
-    INPUT_FILE_KEY = 'input.json'
+    INPUT_FILE_KEY = 'input_2.json'
 
     SAVE_S3 = True
     SAVE_BUCKET_NAME = 'search-home.json'
