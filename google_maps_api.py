@@ -53,5 +53,10 @@ def handler(event, context):
         # Return without making an API call
         return {
             "statusCode": 200,
+            "headers": {
+                "Access-Control-Allow-Headers" : "Content-Type",
+                "Access-Control-Allow-Origin": "https://d82cwlwrba78u.cloudfront.net",
+                "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+        },
             "body": json.dumps({"suggestions": []})
         }
