@@ -1,12 +1,14 @@
 *.pyc
-*.xlsx
 *.json
 node_modules
 !package.json
 !google_sheet/*
 credentials.json
 config.js
-node_modules
+env
+# Exclude virtual environment directory
+venv/
+*.zip
 
 # Ignore macOS system files
 .DS_Store
