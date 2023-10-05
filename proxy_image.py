@@ -41,7 +41,7 @@ def lambda_handler(event, context):
             "headers": {
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Headers": "Content-Type",
-                "Access-Control-Allow-Origin": "https://www.kompru.com",
+                "Access-Control-Allow-Origin": "https://d82cwlwrba78u.cloudfront.net",
                 "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
             },
             "body": json.dumps({"image": image_base64}),
