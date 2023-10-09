@@ -26,7 +26,6 @@ class InputSettings:
         json_data = json.loads(response['Body'].read().decode('utf-8'))
 
     TERM = json_data['search_term']
-    # ADDRESS = json_data['address']
     LAT = json_data['lat']
     LNG = json_data['lng']
         

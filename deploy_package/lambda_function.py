@@ -5,15 +5,17 @@ from geopy.geocoders import GoogleV3
 from datetime import datetime
 import requests
 import json
+import pytz
 
 def lambda_handler(event, context):
     return {
-        'statusCode': 200,
-        'headers': [
-            "Access-Control-Allow-Origin" "*",
-            "Access-Control-Allow-Methods" "GET, POST, OPTIONS"
-        ],
-        'body': event    
+        "statusCode": 200,
+        "headers": {
+            "Access-Control-Allow-Headers" : "Content-Type",
+            "Access-Control-Allow-Origin": "https://d82cwlwrba78u.cloudfront.net",
+            "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+        },
+        "body": event    
     }
 
 def set_search_home_data(_products_list:list, _term:str)->dict:
@@ -141,20 +143,20 @@ def convert_address_into_coordinates(address:str)->tuple:
     return lat, lng
 
 """INPUTS"""
-# address = InputSettings.ADDRESS
 term = InputSettings.TERM
 lat = InputSettings.LAT
 lng = InputSettings.LNG
 
 """PROGRAM"""
-current_datetime = datetime.now()
+saopaulo_timezone = pytz.timezone("America/Sao_Paulo")
+current_datetime = datetime.now(saopaulo_timezone)
 formatted_time = current_datetime.strftime("%Y-%m-%d | %H:%M:%S")
 print(f'START: {formatted_time}')
 
 # Get the bearer_token
 bearer_token = get_bearer_token()
 
-current_datetime = datetime.now()
+current_datetime = datetime.now(saopaulo_timezone)
 formatted_time = current_datetime.strftime("%Y-%m-%d | %H:%M:%S")
 print(f'TOKEN: {formatted_time}')
 
@@ -166,7 +168,7 @@ for store in stores:
             products_list.append(items)
 
 #add datetime 
-current_datetime = datetime.now()
+current_datetime = datetime.now(saopaulo_timezone)
 formatted_datetime = current_datetime.strftime("%Y-%m-%d | %H:%M:%S")
 
 datetime_products_list = []
@@ -176,7 +178,7 @@ for product in products_list:
     product = dict(items)
     datetime_products_list.append(product)
 
-current_datetime = datetime.now()
+current_datetime = datetime.now(saopaulo_timezone)
 formatted_time = current_datetime.strftime("%Y-%m-%d | %H:%M:%S")
 print(f'SCRAPPER: {formatted_time}')
 print(f'TOTAL PRODUCTS SCRAPED: {len(datetime_products_list)}')

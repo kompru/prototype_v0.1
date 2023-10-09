@@ -5,6 +5,7 @@ the file "input.json" must be like this:
 
 {
     "search_term": "leite",
-    "address" : "R. Doadora Eliane Stancioli, 35 - Buritis, Belo Horizonte - MG, 30575-790"
+    "lat": -19.9766951,
+    "lng": -43.9692843
 }
 
