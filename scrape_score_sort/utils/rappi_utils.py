@@ -43,20 +43,17 @@ class StringUtils:
         product_dict_list = []
         for product in products:
             product_dict = {}
-            can_add = True
 
             in_stock = product['in_stock']
             product_name = product['name']
             product_score = Fuzzy.main(search_term, product_name)
         
-            if in_stock == False or product_score < 70:
-                can_add = False
-
             product_dict['search'] = search_term
             product_dict['store-id'] = store_id
             product_dict['store-address'] = store_address
             product_dict['store-name'] = store_name
-            
+            product_dict['in_stock'] = in_stock
+            product_dict['product-score'] = product_score
             product_dict['product-name'] = product_name
             product_dict['product-score'] = product_score
 
@@ -77,8 +74,7 @@ class StringUtils:
             product_quantity = product['quantity']
             product_dict['product-quantity'] = product_quantity
 
-            if can_add:
-                product_dict_list.append(product_dict)
+            product_dict_list.append(product_dict)
 
         return product_dict_list 
 

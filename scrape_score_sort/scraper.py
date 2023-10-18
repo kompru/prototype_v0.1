@@ -102,6 +102,22 @@ def set_search_home_data(_products_list:list, _term:str)->dict:
     _products_dict['search_home_results'] = _products_list
     return _products_dict
 
+def update_product_scores_and_can_add(all_products):
+    high_score_present = any(product['product-score'] >= 90 for product in all_products)
+
+    for product in all_products:
+        product_score = product['product-score']
+        in_stock = product['in_stock']
+        
+        if in_stock == False:
+            product['can_add'] = False
+        elif high_score_present and product_score < 70:
+            product['can_add'] = False
+        elif not high_score_present and product_score < 70:
+            product['can_add'] = True
+        else:
+            product['can_add'] = True
+
 def lambda_handler(event, context):
     term = event['search_term']
     lat = event['lat']
@@ -117,12 +133,16 @@ def lambda_handler(event, context):
             for items in store_items:
                 products_list.append(items)
 
+    update_product_scores_and_can_add(products_list)  # 👈 Add this line here
+
+    filtered_products_list = [product for product in products_list if product.get('can_add')]
+
     #add datetime 
     current_datetime = datetime.now(saopaulo_timezone)
     formatted_datetime = current_datetime.strftime("%Y-%m-%d | %H:%M:%S")
 
     datetime_products_list = []
-    for product in products_list:
+    for product in filtered_products_list:
         items = list(product.items())
         items.insert(0, ('k collected-at', formatted_datetime))
         product = dict(items)
@@ -161,7 +181,7 @@ def lambda_handler(event, context):
         product_dict['search_details_results'] = search_details_results
 
     data_dict = set_search_home_data(search_home_results, term)
-    
+
     return {
             "statusCode": 200,
             "headers": {
