@@ -195,3 +195,16 @@ def lambda_handler(event, context):
 if __name__ == "__main__":
     lambda_handler(None, None)
 
+    # # test environment
+    # json_file_path = "C:/Users/luis/Desktop/Kompru/repos/prototype_v0.1/input.json"
+    # if os.path.exists(json_file_path):
+    #     with open(json_file_path, 'r') as json_file:
+    #         json_data = json.load(json_file)  # Load the JSON data into a Python dictionary
+    #         data_dict = lambda_handler(json_data, None)
+
+    #         with open('output.json', 'w') as json_file:
+    #             json.dump(data_dict, json_file, indent=4)
+
+    
+        
+
