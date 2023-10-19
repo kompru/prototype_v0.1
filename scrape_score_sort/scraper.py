@@ -9,7 +9,7 @@ from utils.rappi_utils import StringUtils
 from requests.exceptions import HTTPError, RequestException
 
 # Constants
-saopaulo_timezone = pytz.timezone("America/Sao_Paulo")
+SAO_PAULO_TIMEZONE = pytz.timezone("America/Sao_Paulo")
 URL_PASSPORT = "https://services.rappi.com.br/api/rocket/v2/guest/passport"
 URL_GUEST = "https://services.rappi.com.br/api/rocket/v2/guest"
 URL_STORE_ROUTER = 'https://services.rappi.com.br/api/web-gateway/web/stores-router/id/{}'
@@ -138,7 +138,7 @@ def lambda_handler(event, context):
     filtered_products_list = [product for product in products_list if product.get('can_add')]
 
     #add datetime 
-    current_datetime = datetime.now(saopaulo_timezone)
+    current_datetime = datetime.now(SAO_PAULO_TIMEZONE)
     formatted_datetime = current_datetime.strftime("%Y-%m-%d | %H:%M:%S")
 
     datetime_products_list = []
@@ -148,7 +148,7 @@ def lambda_handler(event, context):
         product = dict(items)
         datetime_products_list.append(product)
 
-    current_datetime = datetime.now(saopaulo_timezone)
+    current_datetime = datetime.now(SAO_PAULO_TIMEZONE)
     formatted_time = current_datetime.strftime("%Y-%m-%d | %H:%M:%S")
     print(f'SCRAPPER: {formatted_time}')
     print(f'TOTAL PRODUCTS SCRAPED: {len(datetime_products_list)}')
