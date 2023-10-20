@@ -4,14 +4,14 @@ import json
 import requests
 from datetime import datetime
 from geopy.geocoders import GoogleV3
-from utils.product_formatter_utils import ProductFormatter, JsonFile
-from utils.rappi_utils import StringUtils
+from utils.product_formatter_utils import ProductFormatter
 from requests.exceptions import HTTPError, RequestException
+from utils.string_utils import StringUtils
 
 # Constants
 SAO_PAULO_TIMEZONE = pytz.timezone("America/Sao_Paulo")
-URL_PASSPORT = "https://services.rappi.com.br/api/rocket/v2/guest/passport"
 URL_GUEST = "https://services.rappi.com.br/api/rocket/v2/guest"
+URL_PASSPORT = "https://services.rappi.com.br/api/rocket/v2/guest/passport"
 URL_STORE_ROUTER = 'https://services.rappi.com.br/api/web-gateway/web/stores-router/id/{}'
 URL_UNIFIED_SEARCH = 'https://services.rappi.com.br/api/pns-global-search-api/v1/unified-search?is_prime=false&unlimited_shipping=false'
 
@@ -59,8 +59,13 @@ def get_store_address_and_name(bearer_token, store_id):
         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36'
     }
     json_data = http_request(URL_STORE_ROUTER.format(store_id), headers=request_headers)
-    store_address = json_data['address']
     store_name = json_data['name']
+
+    if store_name.rfind('Turbo Fresh') != -1:
+        store_address = 'Disponível pelo aplicativo Rappi - sujeito a taxa de entrega' 
+    else:
+        store_address = json_data['address']
+    
     return store_address, store_name
 
 def stores_list(lat, lng, query, bearer_token):
@@ -193,17 +198,17 @@ def lambda_handler(event, context):
         }
 
 if __name__ == "__main__":
-    lambda_handler(None, None)
+    # lambda_handler(None, None)
 
-    # # test environment
-    # json_file_path = "C:/Users/luis/Desktop/Kompru/repos/prototype_v0.1/input.json"
-    # if os.path.exists(json_file_path):
-    #     with open(json_file_path, 'r') as json_file:
-    #         json_data = json.load(json_file)  # Load the JSON data into a Python dictionary
-    #         data_dict = lambda_handler(json_data, None)
+    # test environment
+    json_file_path = "C:/Users/luis/Desktop/Kompru/repos/prototype_v0.1/input.json"
+    if os.path.exists(json_file_path):
+        with open(json_file_path, 'r') as json_file:
+            json_data = json.load(json_file)  # Load the JSON data into a Python dictionary
+            data_dict = lambda_handler(json_data, None)
 
-    #         with open('output.json', 'w') as json_file:
-    #             json.dump(data_dict, json_file, indent=4)
+            with open('output.json', 'w') as json_file:
+                json.dump(data_dict, json_file, indent=4)
 
     
         
